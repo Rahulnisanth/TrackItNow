@@ -1,6 +1,7 @@
+import Image from "next/image";
+// Components Importer :
 import HeroCarousel from "@/components/HeroCarousel";
 import SearchBar from "@/components/SearchBar";
-import Image from "next/image";
 
 export default function Home() {
   return (

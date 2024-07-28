@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+// Nav-Icons util :
 const nav_icons = [
   { src: "/assets/icons/search.svg", alt: "search" },
   { src: "/assets/icons/black-heart.svg", alt: "black-heart" },
