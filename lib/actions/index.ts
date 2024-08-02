@@ -1,4 +1,5 @@
 "use server";
+import { scrapeAmazonProduct } from "../scraper";
 
 export async function ScrapeAndStoreProduct(productUrl: string) {
   if (!productUrl) return;

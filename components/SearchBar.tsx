@@ -23,6 +23,7 @@ const isValidAmazonUrl = (url: string) => {
 const SearchBar = () => {
   const [searchPrompt, setSearchPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  // Submit handling function :
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const isValid = isValidAmazonUrl(searchPrompt);
@@ -33,8 +34,9 @@ const SearchBar = () => {
         setIsLoading(true);
         // Scrapping the products :
         const product = await ScrapeAndStoreProduct(searchPrompt);
-      } catch (err) {
-        console.log(err);
+        console.log(product);
+      } catch (err: any) {
+        console.log(err.message);
       } finally {
         setIsLoading(false);
       }
