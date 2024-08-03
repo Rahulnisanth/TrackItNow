@@ -1,5 +1,10 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
+import {
+  extractPrice,
+  extractRatingsCount,
+  extractRatingStars,
+} from "../utils";
 
 export async function scrapeAmazonProduct(url: string) {
   if (!url) return;
@@ -25,7 +30,28 @@ export async function scrapeAmazonProduct(url: string) {
     // Cheerio utils :
     const $ = cheerio.load(response.data);
     const productTitle = $("#productTitle").text().trim();
-    console.log(productTitle);
+    const isStockAvail = $("#availability .a-size-medium").text().trim();
+    const ratingsStar = extractRatingStars(
+      $("#averageCustomerReviews #acrPopover .a-size-base.a-color-base")
+    );
+    const ratingsCount = extractRatingsCount(
+      $("#averageCustomerReviews #acrCustomerReviewLink #acrCustomerReviewText")
+    );
+    const currentPrice = extractPrice(
+      $(
+        ".a-price.aok-align-center.reinventPricePriceToPayMargin.priceToPay .a-price-whole"
+      )
+    );
+    const originalPrice = extractPrice($(".a-price.a-text-price .a-offscreen"));
+    // Output printing :
+    console.log({
+      productTitle,
+      ratingsStar,
+      ratingsCount,
+      isStockAvail,
+      currentPrice,
+      originalPrice,
+    });
   } catch (err: any) {
     throw new Error(`Failed to scrape product: ${err.message}`);
   }
