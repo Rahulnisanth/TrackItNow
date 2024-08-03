@@ -1,6 +1,10 @@
 import axios from "axios";
 import * as cheerio from "cheerio";
 import {
+  extractCurrency,
+  extractDescription,
+  extractDiscount,
+  extractImages,
   extractPrice,
   extractRatingsCount,
   extractRatingStars,
@@ -29,8 +33,16 @@ export async function scrapeAmazonProduct(url: string) {
     const response = await axios.get(url, options);
     // Cheerio utils :
     const $ = cheerio.load(response.data);
+    const productImages = extractImages(
+      $("#imgTagWrapperId img").attr("data-a-dynamic-image")
+    );
     const productTitle = $("#productTitle").text().trim();
     const isStockAvail = $("#availability .a-size-medium").text().trim();
+    const discount = extractDiscount(
+      $(
+        ".a-size-large.a-color-price.savingPriceOverride.reinventPriceSavingsPercentageMargin.savingsPercentage"
+      )
+    );
     const ratingsStar = extractRatingStars(
       $("#averageCustomerReviews #acrPopover .a-size-base.a-color-base")
     );
@@ -43,15 +55,23 @@ export async function scrapeAmazonProduct(url: string) {
       )
     );
     const originalPrice = extractPrice($(".a-price.a-text-price .a-offscreen"));
-    // Output printing :
-    console.log({
-      productTitle,
-      ratingsStar,
-      ratingsCount,
-      isStockAvail,
-      currentPrice,
-      originalPrice,
-    });
+    const currencyType = extractCurrency($(".a-price-symbol"));
+    const description = extractDescription($);
+    // Converting into data with scraped details of the product :
+    const data = {
+      imageUrls: productImages,
+      title: productTitle,
+      // To be debugged description extractor ...>>>
+      // description: description,
+      reviews: ratingsStar,
+      ratings: ratingsCount,
+      stock: isStockAvail,
+      discount: discount,
+      current_price: currentPrice,
+      original_price: originalPrice,
+      currency: currencyType,
+    };
+    console.log(data);
   } catch (err: any) {
     throw new Error(`Failed to scrape product: ${err.message}`);
   }
