@@ -59,21 +59,23 @@ export async function scrapeAmazonProduct(url: string) {
     const description = extractDescription($);
     // Converting into data with scraped details of the product :
     const data = {
-      imageUrls: productImages,
+      url: url,
+      image: productImages[0],
+      currency: currencyType,
       title: productTitle,
       description: description,
-      reviews: ratingsStar,
-      ratings: ratingsCount,
-      stock: isStockAvail,
-      discount: Number(discount),
+      reviewStarCount: ratingsStar,
+      ratingsCount: ratingsCount,
+      stockStage: isStockAvail,
+      discountRate: Number(discount),
       currentPrice: Number(currentPrice) || Number(originalPrice),
       originalPrice: Number(originalPrice) || Number(currentPrice),
-      currency: currencyType,
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
       averagePrice: Number(currentPrice) || Number(originalPrice),
     };
     console.log(data);
+    return data;
   } catch (err: any) {
     throw new Error(`Failed to scrape product: ${err.message}`);
   }
