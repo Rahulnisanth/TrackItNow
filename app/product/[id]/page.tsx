@@ -1,4 +1,5 @@
 import React from "react";
+import { getProductById } from "@/lib/actions";
 
 interface Props {
   params: {
@@ -6,8 +7,9 @@ interface Props {
   };
 }
 
-const page = ({ params: { id } }: Props) => {
-  return <div>{id}</div>;
+const page = async ({ params: { id } }: Props) => {
+  const product = await getProductById(id);
+  return <h1>{product.title}</h1>;
 };
 
 export default page;
