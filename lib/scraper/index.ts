@@ -4,7 +4,6 @@ import {
   extractCurrency,
   extractDescription,
   extractDiscount,
-  extractImages,
   extractPrice,
   extractRatingsCount,
   extractRatingStars,
@@ -33,9 +32,11 @@ export async function scrapeAmazonProduct(url: string) {
     const response = await axios.get(url, options);
     // Cheerio utils :
     const $ = cheerio.load(response.data);
-    const productImages = extractImages(
-      $("#imgTagWrapperId img").attr("data-a-dynamic-image")
-    );
+    const productImgAttrs =
+      $("#imgBlkFront").attr("data-a-dynamic-image") ||
+      $("#landingImage").attr("data-a-dynamic-image") ||
+      "{}";
+    const productImages = Object.keys(JSON.parse(productImgAttrs));
     const productTitle = $("#productTitle").text().trim();
     const isStockAvail = $("#availability .a-size-medium").text().trim();
     const discount = extractDiscount(

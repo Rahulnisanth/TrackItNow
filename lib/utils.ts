@@ -31,14 +31,7 @@ export function extractRatingsCount(element: any) {
 
 // Image urls extractor :
 export function extractImages(imgAttribute: any) {
-  let images = {};
-  try {
-    images = JSON.parse(imgAttribute);
-  } catch (err) {
-    console.log(err);
-  }
-  if (images) return Object.keys(images);
-  return "";
+  return Object.keys(JSON.parse(imgAttribute));
 }
 
 // Currency type extractor :

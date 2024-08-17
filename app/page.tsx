@@ -2,12 +2,16 @@ import Image from "next/image";
 // Components Importer :
 import HeroCarousel from "@/components/HeroCarousel";
 import SearchBar from "@/components/SearchBar";
+import ProductCard from "@/components/ProductCard";
+// Server-side functions:
+import { getAllProducts } from "@/lib/actions";
 
-export default function Home() {
+export default async function Home() {
+  const products = await getAllProducts();
   return (
     <>
       {/* Hero Section */}
-      <section className="px-6 md:px-20 py-10">
+      <section className="px-6 md:px-20 py-24">
         <div className="flex max-xl:flex-col gap-16">
           <div className="flex flex-col justify-center">
             <h1 className="head-text">
@@ -25,12 +29,12 @@ export default function Home() {
           <HeroCarousel />
         </div>
       </section>
-      {/* Trending Section */}
+      {/* All products / Trending Section */}
       <section className="trending-section">
         <h2 className="section-text">Trending</h2>
         <div className="flex flex-wrap gap-x-8 gap-y-16">
-          {["Sneaker", "Phones", "Shirts", "Toys"].map((product) => (
-            <p key={product}>{product}</p>
+          {products?.map((product) => (
+            <ProductCard key={product._id} product={product} />
           ))}
         </div>
       </section>

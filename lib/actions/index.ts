@@ -45,3 +45,25 @@ export async function ScrapeAndStoreProduct(productUrl: string) {
     throw new Error(`Failed to create/update product: ${err.message}`);
   }
 }
+
+export async function getProductById(productId: string) {
+  try {
+    await connect_to_database();
+    const product = await Product.findOne({ _id: productId });
+    if (!product) return "No product found!";
+    return product;
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export async function getAllProducts() {
+  try {
+    await connect_to_database();
+    const products = await Product.find();
+    if (!products) return [];
+    return products;
+  } catch (err) {
+    console.log(err);
+  }
+}
