@@ -46,42 +46,6 @@ export function extractDiscount(element: any) {
   return discount ? discount.replace(/[^0-9]/g, "") : "";
 }
 
-// Description Extractor :
-export function extractDescription($: any) {
-  const selectors = [
-    "#productDescription p", // Main product description
-    "#productDescription span", // Sometimes description is within spans
-    "#feature-bullets .a-list-item", // Feature bullets
-    ".aplus-v2 .aplus-module-wrapper", // A+ Content module wrapper
-    ".aplus-module .aplus-text", // A+ Text Content
-    ".techD .a-section .a-spacing-none", // Technical details section
-  ];
-  const unwantedPatterns = [
-    /Electronics|Headphones|Headphones, Earbuds & Accessories|›/i, // Common breadcrumb text
-    /₹[0-9,]+\.00/, // Price mentions
-    /VIDEO|To view this video|Download Flash Player/i, // Video-related text
-    /5 star[0-9%]+/, // Star ratings
-    /Sort reviews by|Top reviews|Most recent/i, // Review-related text
-  ];
-  for (const selector of selectors) {
-    const elements = $(selector);
-    if (elements.length > 0) {
-      const textContent = elements
-        .map((_: any, element: any) => $(element).text().trim())
-        .get()
-        .filter(
-          (text: string) =>
-            !unwantedPatterns.some((pattern) => pattern.test(text))
-        )
-        .join("\n");
-      if (textContent.length > 0) {
-        return textContent;
-      }
-    }
-  }
-  return "";
-}
-
 // Highest Price Extractor :
 export function getHighestPrice(priceList: PriceHistoryItem[]) {
   let highestPrice = priceList[0];
@@ -117,6 +81,13 @@ export const formatNumber = (num: number = 0) => {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+};
+
+// Calculating the overall recommended buyers :
+export const calculateRecommendedBuyers = (input: string) => {
+  const decimalValue = parseFloat(input);
+  const result = decimalValue * 20;
+  return result;
 };
 
 // Node mailer accent :

@@ -12,7 +12,6 @@ export type Product = {
   currency: string;
   image: string;
   title: string;
-  description: string;
   ratingsCount: string;
   reviewStarCount: string;
   stockStage: string;

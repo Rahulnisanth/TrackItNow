@@ -10,7 +10,6 @@ const productSchema = new mongoose.Schema(
     StockStage: { type: String, required: true },
     reviewStarCount: { type: String, required: true },
     ratingsCount: { type: String, required: true },
-    description: { type: String },
     // Numbers :
     discountRate: { type: Number },
     currentPrice: { type: Number, required: true },
