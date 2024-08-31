@@ -86,7 +86,7 @@ export const formatNumber = (num: number = 0) => {
 // Calculating the overall recommended buyers :
 export const calculateRecommendedBuyers = (input: string) => {
   const decimalValue = parseFloat(input);
-  const result = decimalValue * 20;
+  const result = (decimalValue % 5) * 100;
   return result;
 };
 

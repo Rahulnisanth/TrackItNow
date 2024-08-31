@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Montserrat } from "next/font/google";
 import "./globals.css";
 // Components Importer :
 import Navbar from "@/components/Navbar";
@@ -7,6 +7,7 @@ import Navbar from "@/components/Navbar";
 // Fonts-util :
 const inter = Inter({ subsets: ["latin"] });
 const spaceGrotesk = Space_Grotesk({ subsets: ["latin"] });
+const montserrat = Montserrat({ subsets: ["latin"] });
 // Meta-data :
 export const metadata: Metadata = {
   title: "Price Pulse",
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         <main className="max-w-10xl mx-auto">
           <Navbar />
           {children}
