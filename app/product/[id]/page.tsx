@@ -116,7 +116,11 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 
               <p className="text-sm text-black opacity-50">
                 <span className="text-primary-green font-semibold">
-                  {calculateRecommendedBuyers(product.reviewStarCount)}%
+                  {calculateRecommendedBuyers(
+                    product.ratingsCount,
+                    product.reviewStarCount
+                  )}
+                  %
                 </span>{" "}
                 of buyers have recommended this.
               </p>

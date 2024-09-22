@@ -24,49 +24,56 @@ export const generateEmailContent = async (
 
   switch (type) {
     case Notification.WELCOME:
-      subject = `Welcome to Price Tracking for ${shortenedTitle}`;
+      subject = `🚀 Welcome to Track It Now - Price Tracking for ${shortenedTitle}!`;
       body = `
-        <div>
-          <h2>Welcome to Track It Now, The ultimate price tracker 🚀</h2>
-          <p>You are now tracking ${product.title}.</p>
-          <p>Here's an example of how you'll receive updates:</p>
-          <div style="border: 1px solid #ccc; padding: 10px; background-color: #f8f8f8;">
-            <h3>${product.title} is back in stock!</h3>
-            <p>We're excited to let you know that ${product.title} is now back in stock.</p>
-            <p>Don't miss out - <a href="${product.url}" target="_blank" rel="noopener noreferrer">buy it now</a>!</p>
-            <img src="https://i.ibb.co/pwFBRMC/Screenshot-2023-09-26-at-1-47-50-AM.png" alt="Product Image" style="max-width: 100%;" />
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <h1 style="color: #1d72b8;">Welcome to <strong>Track It Now</strong></h1>
+          <p style="font-size: 18px;">The ultimate price tracker is here to save you money!</p>
+          <p>You’ve started tracking <strong>${product.title}</strong>.<br /> Don’t worry, we’ve got you covered with the latest price updates!</p>
+          <p>Here's a sneak peek of what your updates will look like:</p>
+          
+          <div style="border: 1px solid #ccc; padding: 20px; background-color: #f0f4f8; border-radius: 10px; margin: 20px auto; max-width: 500px;">
+            <h3 style="color: #e63946;">${product.title} is back in stock!</h3>
+            <p>We’re thrilled to inform you that <strong>${product.title}</strong> is now available.</p>
+            <p><a href="${product.url}" style="background-color: #1d72b8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Buy Now</a></p>
+            <img src="${product.image}" alt="${product.title}" style="width: 100%; max-width: 400px; margin-top: 10px;" />
           </div>
-          <p>Stay tuned for more updates on ${product.title} and other products you're tracking.</p>
+
+          <p style="font-size: 16px;">Stay tuned for more exciting price updates on <strong>${product.title}</strong> and other products you're tracking.</p>
+          <footer style="color: #888; font-size: 14px;">Powered by Track It Now</footer>
         </div>
       `;
       break;
 
     case Notification.CHANGE_OF_STOCK:
-      subject = `${shortenedTitle} is now back in stock!`;
+      subject = `✨ ${shortenedTitle} is Back in Stock! Get Yours Now!`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} is now restocked! Grab yours before they run out again!</h4>
-          <p>See the product <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <h2 style="color: #1d72b8;">Stock Update: ${product.title} is Restocked!</h2>
+          <p>Great news! The item you were tracking is now back in stock!</p>
+          <p><a href="${product.url}" style="background-color: #1d72b8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Check it Out</a></p>
         </div>
       `;
       break;
 
     case Notification.LOWEST_PRICE:
-      subject = `Lowest Price Alert for ${shortenedTitle}`;
+      subject = `🔥 Lowest Price Ever for ${shortenedTitle}!`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} has reached its lowest price ever!!</h4>
-          <p>Grab the product <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a> now.</p>
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <h2 style="color: #e63946;">Alert: Lowest Price for ${product.title}!</h2>
+          <p>Congratulations! <strong>${product.title}</strong> is now at its lowest price!</p>
+          <p>Don’t miss out – <a href="${product.url}" style="background-color: #1d72b8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Buy Now</a></p>
         </div>
       `;
       break;
 
     case Notification.THRESHOLD_MET:
-      subject = `Discount Alert for ${shortenedTitle}`;
+      subject = `💸 Massive Discount on ${shortenedTitle}! Over ${THRESHOLD_PERCENTAGE}% Off!`;
       body = `
-        <div>
-          <h4>Hey, ${product.title} is now available at a discount more than ${THRESHOLD_PERCENTAGE}%!</h4>
-          <p>Grab it right away from <a href="${product.url}" target="_blank" rel="noopener noreferrer">here</a>.</p>
+        <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
+          <h2 style="color: #1d72b8;">Discount Alert!</h2>
+          <p>Hurry up! <strong>${product.title}</strong> is now available at a discount of over ${THRESHOLD_PERCENTAGE}%!</p>
+          <p><a href="${product.url}" style="background-color: #1d72b8; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Grab the Deal</a></p>
         </div>
       `;
       break;
