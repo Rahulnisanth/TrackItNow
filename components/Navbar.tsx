@@ -21,7 +21,7 @@ const Navbar = () => {
             alt="logo"
           />
           <p className="nav-logo">
-            TrackIt<span className="text-primary">Now</span>
+            TrackIt<span className="text-primary">Now.</span>
           </p>
         </Link>
 

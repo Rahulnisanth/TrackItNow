@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema(
     currency: { type: String, required: true },
     image: { type: String, required: true },
     title: { type: String, required: true },
-    StockStage: { type: String, required: true },
+    // StockStage
+    StockStage: { type: String },
     reviewStarCount: { type: String, required: true },
     ratingsCount: { type: String, required: true },
     // Numbers :
@@ -18,6 +19,7 @@ const productSchema = new mongoose.Schema(
     highestPrice: { type: Number },
     averagePrice: { type: Number },
     // Arrays :
+    users: [{ email: { type: String, required: true } }],
     default: [],
     priceHistory: [
       {

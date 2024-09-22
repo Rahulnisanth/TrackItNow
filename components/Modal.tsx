@@ -1,11 +1,27 @@
 "use client";
-import React, { Fragment } from "react";
+import React, { FormEvent, Fragment } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
+import { addUserEmailToProduct } from "@/lib/actions";
 
-const Modal = () => {
+interface Props {
+  productId: string;
+}
+
+const Modal = ({ productId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [email, setEmail] = useState("");
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await addUserEmailToProduct(productId, email);
+    setIsSubmitting(false);
+    setEmail("");
+    close();
+  };
 
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
@@ -77,7 +93,7 @@ const Modal = () => {
                   </p>
                 </div>
 
-                <form className="flex flex-col mt-5">
+                <form onSubmit={handleSubmit} className="flex flex-col mt-5">
                   <label
                     htmlFor="email"
                     className="text-sm font-medium text-gray-700"
@@ -95,6 +111,8 @@ const Modal = () => {
                       required
                       type="email"
                       id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                       placeholder="Enter your email address"
                       className="dialog-input ml-2 flex-1 border-none focus:outline-none"
                     />
@@ -104,7 +122,7 @@ const Modal = () => {
                     type="submit"
                     className="dialog-btn mt-4 bg-blue-600 text-white py-2 px-4 rounded-md"
                   >
-                    Submit
+                    {isSubmitting ? "Processing..." : "Track"}
                   </button>
                 </form>
               </div>
