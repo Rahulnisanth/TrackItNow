@@ -22,7 +22,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 
   return (
     <div className="product-container">
-      <div className="flex gap-28 xl:flex-row flex-col">
+      <div className="flex gap-12 md:gap-28 xl:flex-row flex-col">
         <div className="product-image">
           <Image
             src={product.image}
@@ -36,7 +36,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
         <div className="flex-1 flex flex-col">
           <div className="flex justify-between items-start gap-5 flex-wrap pb-6">
             <div className="flex flex-col gap-3">
-              <p className="text-[28px] text-secondary font-semibold">
+              <p className="text-[20px] md:text-[25px] text-secondary font-semibold">
                 {product.title}
               </p>
 
@@ -56,7 +56,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 </p>
               </div>
 
-              <div className="p-2 bg-white-200 rounded-10">
+              <div className="p-2 bg-white-200 rounded-10 cursor-pointer">
                 <Image
                   src="/assets/icons/bookmark.svg"
                   alt="bookmark"
@@ -65,7 +65,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                 />
               </div>
 
-              <div className="p-2 bg-white-200 rounded-10">
+              <div className="p-2 bg-white-200 rounded-10 cursor-pointer">
                 <Image
                   src="/assets/icons/share.svg"
                   alt="share"
@@ -170,9 +170,9 @@ const ProductDetails = async ({ params: { id } }: Props) => {
 
       {/* Similar Products */}
       {similarProducts && similarProducts.length > 0 && (
-        <div className="py-14 flex flex-col gap-2 w-full">
+        <div className="py-2 text-center md:py-14 flex flex-col gap-2 w-full">
           <p className="section-text">Similar Products</p>
-          <div className="flex flex-wrap mt-10 gap-x-8 gap-y-16">
+          <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
             {similarProducts.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}

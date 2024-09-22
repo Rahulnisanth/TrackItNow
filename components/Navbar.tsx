@@ -28,6 +28,7 @@ const Navbar = () => {
         <div className="flex item-center gap-5">
           {nav_icons.map((icon) => (
             <Image
+              className="cursor-pointer"
               key={icon.alt}
               src={icon.src}
               alt={icon.alt}
