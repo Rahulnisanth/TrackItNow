@@ -86,14 +86,13 @@ export const generateEmailContent = async (
 };
 
 const transporter = nodemailer.createTransport({
-  pool: true,
-  service: "hotmail",
-  port: 2525,
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
   auth: {
-    user: "trackitnowpro@hotmail.com",
-    pass: process.env.EMAIL_PASSWORD,
+    user: "trackitnowpro@gmail.com",
+    pass: process.env.EMAIL_APP_PASSWORD,
   },
-  maxConnections: 5,
 });
 
 export const sendEmail = async (
