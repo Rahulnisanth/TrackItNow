@@ -8,18 +8,13 @@ import { revalidatePath } from "next/cache";
 import { generateEmailContent, sendEmail } from "../nodemailer";
 
 export async function ScrapeAndStoreProduct(productUrl: string) {
-  if (!productUrl) return;
-
+  if (!productUrl) return null;
   try {
     await connect_to_database();
-
     const scrapedProduct = await scrapeAmazonProduct(productUrl);
-
-    if (!scrapedProduct) return;
-
+    if (!scrapedProduct) return null;
     let product = scrapedProduct;
     const existingProduct = await Product.findOne({ url: product.url });
-
     if (existingProduct) {
       const updatedPriceHistory = [
         ...(existingProduct.priceHistory || []),
@@ -41,8 +36,10 @@ export async function ScrapeAndStoreProduct(productUrl: string) {
     );
 
     if (newProduct) {
-      revalidatePath(`/products/${newProduct._id}`);
+      await revalidatePath(`/products/${newProduct._id}`);
+      return { id: newProduct._id.toString() };
     }
+    return { id: existingProduct._id.toString() };
   } catch (err: any) {
     throw new Error(`Failed to create/update product: ${err.message}`);
   }

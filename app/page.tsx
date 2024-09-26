@@ -1,4 +1,3 @@
-import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
@@ -6,9 +5,9 @@ import { getAllProducts } from "@/lib/actions";
 
 export default async function Home() {
   const products = await getAllProducts();
+
   return (
     <>
-      {/* Hero Section */}
       <section className="px-6 md:px-20 py-24 -mt-10">
         <div className="flex flex-col md:flex-row w-full max-xl:flex-col gap-10">
           <div className="flex flex-col justify-center md:w-1/2">
@@ -25,12 +24,12 @@ export default async function Home() {
               <SearchBar />
             </div>
           </div>
-          {/* HeroCarousel */}
           <div className="w-full md:w-1/2">
             <HeroCarousel />
           </div>
         </div>
       </section>
+
       {/* All products / Trending Section */}
       <section className="trending-section text-center">
         <h2 className="section-text">Most Trending Products</h2>

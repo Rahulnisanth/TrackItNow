@@ -2,6 +2,7 @@
 
 import { ScrapeAndStoreProduct } from "@/lib/actions";
 import { FormEvent, useState } from "react";
+import ProductAlert from "./ProductAlert";
 
 const isValidAmazonUrl = (url: string) => {
   try {
@@ -23,7 +24,9 @@ const isValidAmazonUrl = (url: string) => {
 const SearchBar = () => {
   const [searchPrompt, setSearchPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // Submit handling function :
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [productId, setProductId] = useState("");
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const isValid = isValidAmazonUrl(searchPrompt);
@@ -32,8 +35,14 @@ const SearchBar = () => {
     } else {
       try {
         setIsLoading(true);
-        // Scrapping the products :
         const product = await ScrapeAndStoreProduct(searchPrompt);
+        console.log("product => ", product);
+        if (product) {
+          console.log("product id => ", product);
+          setProductId(product.id);
+          setAlertOpen(true);
+        }
+        setSearchPrompt("");
       } catch (err: any) {
         console.log(err);
       } finally {
@@ -41,23 +50,32 @@ const SearchBar = () => {
       }
     }
   };
+
   return (
-    <form className="flex flex-wrap gap-4 mt-12" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        value={searchPrompt}
-        onChange={(e) => setSearchPrompt(e.target.value)}
-        className="searchbar-input"
-        placeholder="Enter product link"
+    <>
+      <form className="flex flex-wrap gap-4 mt-12" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={searchPrompt}
+          onChange={(e) => setSearchPrompt(e.target.value)}
+          className="searchbar-input"
+          placeholder="Enter product link"
+        />
+        <button
+          type="submit"
+          className="searchbar-btn"
+          disabled={searchPrompt === ""}
+        >
+          {isLoading ? "Searching..." : "Search"}
+        </button>
+      </form>
+      {/* Product alert box */}
+      <ProductAlert
+        alertOpen={alertOpen}
+        setAlertOpen={setAlertOpen}
+        productId={productId}
       />
-      <button
-        type="submit"
-        className="searchbar-btn"
-        disabled={searchPrompt === ""}
-      >
-        {isLoading ? "Searching..." : "Search"}
-      </button>
-    </form>
+    </>
   );
 };
 
