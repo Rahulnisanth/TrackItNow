@@ -10,10 +10,14 @@ import {
 } from "../../../lib/utils";
 import { generateEmailContent, sendEmail } from "../../../lib/nodemailer/index";
 
+export const maxDuration = 300;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const GET = async () => {
   try {
     await connect_to_database();
-    const products = await Product.find({});
+    const products = await Product.findAll();
     if (!products) throw new Error("No products found!");
 
     // Scrape all products in the database and update the price history :
@@ -37,7 +41,7 @@ export const GET = async () => {
         };
 
         const updatedProduct = await Product.findOneAndUpdate(
-          { url: scrapedProduct.url },
+          { url: product.url },
           product
         );
 
