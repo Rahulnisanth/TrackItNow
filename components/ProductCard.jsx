@@ -11,7 +11,7 @@ const ProductCard = ({ product }) => {
     >
       <div className="product-card_img-container">
         <Image
-          src={product.image[0]}
+          src={product.image}
           alt={product.title}
           width={200}
           height={200}

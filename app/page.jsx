@@ -17,7 +17,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="px-6 md:px-20 py-24 -mt-10">
+      <section className="px-6 md:px-20 py-12 md:py-24 -mt-10">
         <div className="flex flex-col md:flex-row w-full max-xl:flex-col gap-10">
           <div className="flex flex-col justify-center md:w-1/2">
             <h1 className="head-text text-center md:text-left">
