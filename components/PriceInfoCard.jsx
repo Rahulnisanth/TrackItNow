@@ -1,12 +1,6 @@
 import Image from "next/image";
 
-interface Props {
-  title: string;
-  iconSrc: string;
-  value: string;
-}
-
-const PriceInfoCard = ({ title, iconSrc, value }: Props) => {
+const PriceInfoCard = ({ title, iconSrc, value }) => {
   return (
     <div className={`price-info_card`}>
       <p className="text-base text-black-100">{title}</p>

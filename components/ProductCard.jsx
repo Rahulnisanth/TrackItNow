@@ -1,13 +1,8 @@
-import { Product } from "@/lib/types";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-interface Props {
-  product: Product;
-}
-
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product }) => {
   return (
     // href={`/product/${product._id}`}
     <Link

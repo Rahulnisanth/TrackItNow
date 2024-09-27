@@ -4,7 +4,7 @@ import { ScrapeAndStoreProduct } from "@/lib/actions";
 import { FormEvent, useState } from "react";
 import ProductAlert from "./ProductAlert";
 
-const isValidAmazonUrl = (url: string) => {
+const isValidAmazonUrl = (url) => {
   try {
     const parsedUrl = new URL(url);
     const hostname = parsedUrl.hostname;
@@ -27,7 +27,7 @@ const SearchBar = () => {
   const [alertOpen, setAlertOpen] = useState(false);
   const [productId, setProductId] = useState("");
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const isValid = isValidAmazonUrl(searchPrompt);
     if (!isValid) {
@@ -43,7 +43,7 @@ const SearchBar = () => {
           setAlertOpen(true);
         }
         setSearchPrompt("");
-      } catch (err: any) {
+      } catch (err) {
         console.log(err);
       } finally {
         setIsLoading(false);

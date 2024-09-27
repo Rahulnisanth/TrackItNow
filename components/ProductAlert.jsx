@@ -3,17 +3,7 @@ import React, { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 
-interface AlertProps {
-  alertOpen: boolean;
-  setAlertOpen: (open: boolean) => void;
-  productId: string;
-}
-
-const ProductAlert: React.FC<AlertProps> = ({
-  alertOpen,
-  setAlertOpen,
-  productId,
-}) => {
+const ProductAlert = ({ alertOpen, setAlertOpen, productId }) => {
   const router = useRouter();
   const close = () => {
     setAlertOpen(false);

@@ -7,15 +7,10 @@ import ProductCard from "@/components/ProductCard";
 import Modal from "@/components/Modal";
 // Utility functions :
 import { getProductById, getSimilarProducts } from "@/lib/actions";
-import { Product } from "@/lib/types";
 import { calculateRecommendedBuyers, formatNumber } from "@/lib/utils";
 
-type Props = {
-  params: { id: string };
-};
-
-const ProductDetails = async ({ params: { id } }: Props) => {
-  const product: Product = await getProductById(id);
+const ProductDetails = async ({ params: { id } }) => {
+  const product = await getProductById(id);
   const similarProducts = await getSimilarProducts(id);
 
   if (!product) redirect("/");
