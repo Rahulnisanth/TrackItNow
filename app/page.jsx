@@ -3,6 +3,15 @@ import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/lib/actions";
 
+// Carousel Images
+const hero_images = [
+  { imgUrl: "assets/images/hero-1.svg", alt: "hero-1" },
+  { imgUrl: "assets/images/hero-2.svg", alt: "hero-2" },
+  { imgUrl: "assets/images/hero-3.svg", alt: "hero-3" },
+  { imgUrl: "assets/images/hero-4.svg", alt: "hero-4" },
+  { imgUrl: "assets/images/hero-5.svg", alt: "hero-5" },
+];
+
 export default async function Home() {
   const products = await getAllProducts();
 
@@ -25,20 +34,24 @@ export default async function Home() {
             </div>
           </div>
           <div className="w-full md:w-1/2">
-            <HeroCarousel />
+            <HeroCarousel image_src={hero_images} />
           </div>
         </div>
       </section>
 
       {/* All products / Trending Section */}
-      <section className="trending-section text-center">
-        <h2 className="section-text">Most Trending Products</h2>
-        <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
-          {products?.map((product) => (
-            <ProductCard key={product._id} product={product} />
-          ))}
-        </div>
-      </section>
+      {products.length > 0 ? (
+        <section className="trending-section text-center">
+          <h2 className="section-text">Most Trending Products</h2>
+          <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
+            {products?.map((product) => (
+              <ProductCard key={product._id} product={product} />
+            ))}
+          </div>
+        </section>
+      ) : (
+        <span>{""}</span>
+      )}
     </>
   );
 }

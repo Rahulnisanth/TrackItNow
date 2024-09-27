@@ -3,16 +3,7 @@ import Image from "next/image";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 
-// Carousel Images
-const hero_images = [
-  { imgUrl: "assets/images/hero-1.svg", alt: "hero-1" },
-  { imgUrl: "assets/images/hero-2.svg", alt: "hero-2" },
-  { imgUrl: "assets/images/hero-3.svg", alt: "hero-3" },
-  { imgUrl: "assets/images/hero-4.svg", alt: "hero-4" },
-  { imgUrl: "assets/images/hero-5.svg", alt: "hero-5" },
-];
-
-const HeroCarousel = () => {
+const HeroCarousel = ({ image_src }) => {
   return (
     <div className="relative w-full overflow-hidden">
       <Carousel
@@ -24,7 +15,7 @@ const HeroCarousel = () => {
         showStatus={false}
         showIndicators={false}
       >
-        {hero_images.map((image) => (
+        {image_src.map((image) => (
           <div className="flex justify-center items-center w-full h-full">
             <Image
               src={image.imgUrl}
