@@ -12,7 +12,6 @@ import { calculateRecommendedBuyers, formatNumber } from "@/lib/utils";
 const ProductDetails = async ({ params: { id } }) => {
   const product = await getProductById(id);
   const similarProducts = await getSimilarProducts(id);
-
   if (!product) redirect("/");
 
   return (

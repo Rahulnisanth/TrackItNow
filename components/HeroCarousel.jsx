@@ -16,7 +16,10 @@ const HeroCarousel = ({ image_src }) => {
         showIndicators={false}
       >
         {image_src.map((image) => (
-          <div className="flex justify-center items-center w-full h-full">
+          <div
+            key={image.alt}
+            className="flex justify-center items-center w-full h-full"
+          >
             <Image
               src={image.imgUrl}
               alt={image.alt}
