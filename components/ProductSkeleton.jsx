@@ -8,20 +8,19 @@ const ProductSkeleton = () => {
         {/* Skeleton for Product Details */}
         <div className="flex-1 flex flex-col gap-6">
           {/* Title and Visit Link */}
-          <div className="flex justify-between items-start gap-5 flex-wrap pb-6">
+          <div className="flex justify-between items-start gap-5 pb-6">
             <div className="flex flex-col gap-3">
-              <div className="bg-gray-400 h-6 w-48 sm:w-64 md:w-80 rounded-md" />{" "}
+              <div className="bg-gray-400 h-6 w-56 sm:w-64 md:w-80 rounded-md" />{" "}
+              <div className="bg-gray-400 h-6 w-56 sm:w-64 md:w-80 rounded-md" />{" "}
+              <div className="bg-gray-400 h-6 w-56 sm:w-64 md:w-80 rounded-md" />{" "}
+              <div className="bg-gray-400 h-6 w-56 sm:w-64 md:w-80 rounded-md" />{" "}
               {/* Title */}
-              <div className="bg-gray-400 h-4 w-24 sm:w-28 md:w-32 rounded-md" />{" "}
+              <div className="bg-gray-400 h-6 w-48 sm:w-64 md:w-80 rounded-md" />{" "}
               {/* Visit Link */}
             </div>
 
             <div className="flex items-center gap-3">
               <div className="bg-gray-400 h-6 w-16 sm:w-20 md:w-24 rounded-md" />{" "}
-              {/* Discount */}
-              <div className="bg-gray-400 h-8 w-8 rounded-full" />{" "}
-              {/* Bookmark */}
-              <div className="bg-gray-400 h-8 w-8 rounded-full" /> {/* Share */}
             </div>
           </div>
 
@@ -48,15 +47,15 @@ const ProductSkeleton = () => {
           </div>
 
           {/* Price History */}
-          <div className="my-7 flex flex-col gap-5">
+          <div className="my-7 flex gap-5">
             <div className="flex gap-3 flex-wrap justify-start">
-              <div className="bg-gray-400 h-20 w-28 sm:h-24 sm:w-32 md:h-24 md:w-36 rounded-md" />{" "}
+              <div className="bg-gray-400 h-20 w-52 md:h-24 md:w-48 rounded-md" />{" "}
               {/* Current Price Card */}
-              <div className="bg-gray-400 h-20 w-28 sm:h-24 sm:w-32 md:h-24 md:w-36 rounded-md" />{" "}
+              <div className="bg-gray-400 h-20 w-52 md:h-24 md:w-48 rounded-md" />{" "}
               {/* Average Price Card */}
-              <div className="bg-gray-400 h-20 w-28 sm:h-24 sm:w-32 md:h-24 md:w-36 rounded-md" />{" "}
+              <div className="bg-gray-400 h-20 w-52 md:h-24 md:w-48 rounded-md" />{" "}
               {/* Highest Price Card */}
-              <div className="bg-gray-400 h-20 w-28 sm:h-24 sm:w-32 md:h-24 md:w-36 rounded-md" />{" "}
+              <div className="bg-gray-400 h-20 w-52 md:h-24 md:w-48 rounded-md" />{" "}
               {/* Lowest Price Card */}
             </div>
           </div>
