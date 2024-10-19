@@ -158,7 +158,7 @@ const ProductDetails = async ({ params: { id } }) => {
           {/* Product price history end */}
 
           {/* Modal / Tracker button */}
-          {/* <Modal productId={id} /> */}
+          <Modal productId={id} />
         </div>
       </div>
 
