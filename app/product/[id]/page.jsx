@@ -66,7 +66,7 @@ const ProductDetails = async ({ params: { id } }) => {
 
               {/* Delete button */}
               <ProductDelete
-                productId={product._id}
+                productId={id}
                 imageLink={`/assets/icons/trash.svg`}
               />
             </div>
