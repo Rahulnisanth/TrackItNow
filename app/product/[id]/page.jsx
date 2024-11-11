@@ -5,8 +5,13 @@ import { redirect } from "next/navigation";
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
 import Modal from "@/components/Modal";
+import ProductDelete from "@/components/ProductDelete";
 // Utility functions :
-import { getProductById, getSimilarProducts } from "@/lib/actions";
+import {
+  deleteProduct,
+  getProductById,
+  getSimilarProducts,
+} from "@/lib/actions";
 import { calculateRecommendedBuyers, formatNumber } from "@/lib/utils";
 
 const ProductDetails = async ({ params: { id } }) => {
@@ -58,6 +63,12 @@ const ProductDetails = async ({ params: { id } }) => {
                   height={20}
                 />
               </div>
+
+              {/* Delete button */}
+              <ProductDelete
+                productId={product._id}
+                imageLink={`/assets/icons/trash.svg`}
+              />
             </div>
           </div>
 
