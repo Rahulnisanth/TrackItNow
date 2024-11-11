@@ -19,120 +19,64 @@ export const GET = async () => {
     // Connect to database
     await connect_to_database();
 
-    // Use find() instead of findAll()
     const products = await Product.find({});
+    if (!products) throw new Error("No product fetched");
 
-    if (!products || products.length === 0) {
-      console.log("No products found in database");
-      return NextResponse.json({
-        message: "No products found",
-        data: [],
-      });
-    }
+    // SCRAPE LATEST PRODUCT DETAILS & UPDATE DB
+    const updatedProducts = await Promise.all(
+      products.map(async (currentProduct) => {
+        // Scrape product
+        const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
 
-    console.log(`Starting price update for ${products.length} products`);
+        if (!scrapedProduct) return;
 
-    // Scrape products in batches to avoid overwhelming the server
-    const batchSize = 5;
-    const updatedProducts = [];
+        const updatedPriceHistory = [
+          ...currentProduct.priceHistory,
+          {
+            price: scrapedProduct.currentPrice,
+          },
+        ];
 
-    for (let i = 0; i < products.length; i += batchSize) {
-      const batch = products.slice(i, i + batchSize);
-      const batchPromises = batch.map(async (currentProduct) => {
-        try {
-          // Scrape product data
-          const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
+        const product = {
+          ...scrapedProduct,
+          priceHistory: updatedPriceHistory,
+          lowestPrice: getLowestPrice(updatedPriceHistory),
+          highestPrice: getHighestPrice(updatedPriceHistory),
+          averagePrice: getAveragePrice(updatedPriceHistory),
+        };
 
-          if (!scrapedProduct) {
-            console.log(`Failed to scrape product: ${currentProduct.url}`);
-            return null;
-          }
+        // Update Products in DB
+        const updatedProduct = await Product.findOneAndUpdate(
+          {
+            url: product.url,
+          },
+          product
+        );
 
-          // Update price history
-          const updatedPriceHistory = [
-            ...currentProduct.priceHistory,
-            {
-              price: scrapedProduct.currentPrice,
-              date: new Date(),
-            },
-          ];
+        // CHECK EACH PRODUCT'S STATUS & SEND EMAIL ACCORDINGLY
+        const emailType = getEmailNotifyType(scrapedProduct, currentProduct);
 
-          // Prepare updated product data
-          const product = {
-            ...scrapedProduct,
-            priceHistory: updatedPriceHistory,
-            lowestPrice: getLowestPrice(updatedPriceHistory),
-            highestPrice: getHighestPrice(updatedPriceHistory),
-            averagePrice: getAveragePrice(updatedPriceHistory),
+        if (emailType && updatedProduct.users.length > 0) {
+          const productInfo = {
+            title: updatedProduct.title,
+            url: updatedProduct.url,
           };
-
-          // Update product in database
-          const updatedProduct = await Product.findOneAndUpdate(
-            { url: product.url },
-            product,
-            { new: true } // Return updated document
+          // Construct emailContent
+          const emailContent = await generateEmailContent(
+            productInfo,
+            emailType
           );
-
-          if (!updatedProduct) {
-            console.log(`Failed to update product: ${product.url}`);
-            return null;
-          }
-
-          // Handle email notifications
-          if (updatedProduct.users && updatedProduct.users.length > 0) {
-            const emailType = getEmailNotifyType(
-              scrapedProduct,
-              currentProduct
-            );
-
-            if (emailType) {
-              const productInfo = {
-                title: updatedProduct.title,
-                url: updatedProduct.url,
-              };
-
-              const emailContent = await generateEmailContent(
-                productInfo,
-                emailType
-              );
-              const userEmails = updatedProduct.users.map((user) => user.email);
-
-              try {
-                await sendEmail(emailContent, userEmails);
-                console.log(
-                  `Notification sent for product: ${updatedProduct.title}`
-                );
-              } catch (error) {
-                console.error(
-                  `Failed to send email notification: ${error.message}`
-                );
-              }
-            }
-          }
-
-          return updatedProduct;
-        } catch (error) {
-          console.error(
-            `Error processing product ${currentProduct.url}: ${error.message}`
-          );
-          return null;
+          // Get array of user emails
+          const userEmails = updatedProduct.users.map((user) => user.email);
+          // Send email notification
+          await sendEmail(emailContent, userEmails);
         }
-      });
-
-      // Wait for batch to complete and filter out null results
-      const batchResults = (await Promise.all(batchPromises)).filter(Boolean);
-      updatedProducts.push(...batchResults);
-
-      // Add delay between batches to avoid rate limiting
-      if (i + batchSize < products.length) {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-      }
-    }
-
-    console.log(`Successfully updated ${updatedProducts.length} products`);
+        return updatedProduct;
+      })
+    );
 
     return NextResponse.json({
-      message: "Success",
+      message: "Ok",
       data: updatedProducts,
     });
   } catch (error) {
