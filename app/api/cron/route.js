@@ -34,15 +34,21 @@ export const GET = async () => {
 
           const updatedPriceHistory = [
             ...currentProduct.priceHistory,
-            { price: scrapedProduct.currentPrice },
+            { price: scrapedProduct.currentPrice, date: new Date() },
           ];
+
+          // Check for duplicate prices in the price history:
+          const uniquePriceHistory = updatedPriceHistory.filter(
+            (item, index, self) =>
+              index === self.findIndex((t) => t.price === item.price)
+          );
 
           const product = {
             ...scrapedProduct,
-            priceHistory: updatedPriceHistory,
-            lowestPrice: getLowestPrice(updatedPriceHistory),
-            highestPrice: getHighestPrice(updatedPriceHistory),
-            averagePrice: getAveragePrice(updatedPriceHistory),
+            priceHistory: uniquePriceHistory,
+            lowestPrice: getLowestPrice(uniquePriceHistory),
+            highestPrice: getHighestPrice(uniquePriceHistory),
+            averagePrice: getAveragePrice(uniquePriceHistory),
           };
 
           // Update product in the database
@@ -76,14 +82,14 @@ export const GET = async () => {
             `Error processing product with URL: ${currentProduct.url}`,
             err
           );
-          return null; // Continue processing other products if one fails
+          return null;
         }
       })
     );
 
     return NextResponse.json({
       message: "Ok",
-      data: updatedProducts.filter(Boolean), // Remove null values from failed products
+      data: updatedProducts.filter(Boolean),
     });
   } catch (error) {
     console.error("CRON job failed:", error);
