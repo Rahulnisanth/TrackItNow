@@ -10,7 +10,7 @@ import {
 } from "../../../lib/utils";
 import { generateEmailContent, sendEmail } from "../../../lib/nodemailer/index";
 
-export const maxDuration = 300;
+export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
