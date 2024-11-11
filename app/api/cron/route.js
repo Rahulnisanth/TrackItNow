@@ -16,68 +16,74 @@ export const revalidate = 0;
 
 export const GET = async () => {
   try {
-    // Connect to database
+    // Connect to the database
     await connect_to_database();
 
-    const products = await Product.find({});
-    if (!products) throw new Error("No product fetched");
+    // Fetch products with lean to optimize DB queries
+    const products = await Product.find({}).lean();
+    if (!products || products.length === 0)
+      throw new Error("No products found");
 
-    // SCRAPE LATEST PRODUCT DETAILS & UPDATE DB
+    // Scrape and update product details
     const updatedProducts = await Promise.all(
       products.map(async (currentProduct) => {
-        // Scrape product
-        const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
+        try {
+          // Scrape product details
+          const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
+          if (!scrapedProduct) return null;
 
-        if (!scrapedProduct) return;
+          const updatedPriceHistory = [
+            ...currentProduct.priceHistory,
+            { price: scrapedProduct.currentPrice },
+          ];
 
-        const updatedPriceHistory = [
-          ...currentProduct.priceHistory,
-          {
-            price: scrapedProduct.currentPrice,
-          },
-        ];
-
-        const product = {
-          ...scrapedProduct,
-          priceHistory: updatedPriceHistory,
-          lowestPrice: getLowestPrice(updatedPriceHistory),
-          highestPrice: getHighestPrice(updatedPriceHistory),
-          averagePrice: getAveragePrice(updatedPriceHistory),
-        };
-
-        // Update Products in DB
-        const updatedProduct = await Product.findOneAndUpdate(
-          {
-            url: product.url,
-          },
-          product
-        );
-
-        // CHECK EACH PRODUCT'S STATUS & SEND EMAIL ACCORDINGLY
-        const emailType = getEmailNotifyType(scrapedProduct, currentProduct);
-
-        if (emailType && updatedProduct.users.length > 0) {
-          const productInfo = {
-            title: updatedProduct.title,
-            url: updatedProduct.url,
+          const product = {
+            ...scrapedProduct,
+            priceHistory: updatedPriceHistory,
+            lowestPrice: getLowestPrice(updatedPriceHistory),
+            highestPrice: getHighestPrice(updatedPriceHistory),
+            averagePrice: getAveragePrice(updatedPriceHistory),
           };
-          // Construct emailContent
-          const emailContent = await generateEmailContent(
-            productInfo,
-            emailType
+
+          // Update product in the database
+          const updatedProduct = await Product.findOneAndUpdate(
+            { url: product.url },
+            product,
+            { new: true } // Ensure the updated document is returned
+          ).lean();
+
+          if (!updatedProduct) return null;
+
+          // Check each product's status and send email notifications
+          const emailType = getEmailNotifyType(scrapedProduct, currentProduct);
+          if (emailType && updatedProduct.users.length > 0) {
+            const productInfo = {
+              title: updatedProduct.title,
+              url: updatedProduct.url,
+            };
+            const emailContent = await generateEmailContent(
+              productInfo,
+              emailType
+            );
+
+            const userEmails = updatedProduct.users.map((user) => user.email);
+            await sendEmail(emailContent, userEmails);
+          }
+
+          return updatedProduct;
+        } catch (err) {
+          console.error(
+            `Error processing product with URL: ${currentProduct.url}`,
+            err
           );
-          // Get array of user emails
-          const userEmails = updatedProduct.users.map((user) => user.email);
-          // Send email notification
-          await sendEmail(emailContent, userEmails);
+          return null; // Continue processing other products if one fails
         }
-        return updatedProduct;
       })
     );
 
     return NextResponse.json({
       message: "Ok",
-      data: updatedProducts,
+      data: updatedProducts.filter(Boolean), // Remove null values from failed products
     });
   } catch (error) {
     console.error("CRON job failed:", error);

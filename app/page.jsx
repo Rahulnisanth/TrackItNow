@@ -40,7 +40,7 @@ export default async function Home() {
       </section>
 
       {/* All products / Trending Section */}
-      {products.length > 0 ? (
+      {products && products.length > 0 ? (
         <section className="trending-section text-center">
           <h2 className="section-text">Most Trending Products</h2>
           <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
