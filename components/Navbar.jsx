@@ -20,7 +20,7 @@ const Navbar = () => {
             height={27}
             alt="logo"
           />
-          <p className="nav-logo">
+          <p className="nav-logo tracking-wider">
             TrackIt<span className="text-primary">Now.</span>
           </p>
         </Link>

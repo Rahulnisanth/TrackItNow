@@ -7,11 +7,7 @@ import ProductCard from "@/components/ProductCard";
 import Modal from "@/components/Modal";
 import ProductDelete from "@/components/ProductDelete";
 // Utility functions :
-import {
-  deleteProduct,
-  getProductById,
-  getSimilarProducts,
-} from "@/lib/actions";
+import { getProductById, getSimilarProducts } from "@/lib/actions";
 import { calculateRecommendedBuyers, formatNumber } from "@/lib/utils";
 
 const ProductDetails = async ({ params: { id } }) => {
@@ -72,7 +68,7 @@ const ProductDetails = async ({ params: { id } }) => {
             </div>
           </div>
 
-          {/* PRoduct info section */}
+          {/* Product info section */}
           <div className="product-info">
             <div className="flex flex-col gap-2">
               <p className="text-[34px] text-secondary font-bold">

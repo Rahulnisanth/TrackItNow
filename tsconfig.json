@@ -38,7 +38,7 @@
     "components/PriceInfoCard.jsx",
     "components/ProductAlert.jsx",
     "components/ProductCard.jsx",
-    "components/ProductSkeleton.jsx",
+    "components/ProductLoader.jsx",
     "components/SearchBar.jsx",
     "app/product/[id]/loading.jsx",
     "app/product/[id]/page.jsx",
