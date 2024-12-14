@@ -2,6 +2,8 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 // Components Importer :
 import Navbar from "@/components/Navbar";
+import AuthDialog from "@/components/AuthDialog";
+import ClientSessionProvider from "@/components/ClientSessionProvider";
 
 // Fonts-util :
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -15,10 +17,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <main className="max-w-10xl mx-auto">
-          <Navbar />
-          {children}
-        </main>
+        <ClientSessionProvider>
+          <AuthDialog />
+          <main className="max-w-10xl mx-auto">
+            <Navbar />
+            {children}
+          </main>
+        </ClientSessionProvider>
       </body>
     </html>
   );

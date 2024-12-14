@@ -14,10 +14,12 @@
     "cheerio": "^1.0.0-rc.12",
     "mongoose": "^8.5.3",
     "next": "14.2.5",
+    "next-auth": "^4.24.11",
     "nodemailer": "^6.9.15",
     "react": "^18",
     "react-dom": "^18",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^20",
