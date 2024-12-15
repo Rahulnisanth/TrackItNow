@@ -9,6 +9,12 @@ import Image from "next/image";
 export default function AuthDialog() {
   const { data: session, status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setLoading] = useState(false);
+
+  const handleSignin = () => {
+    setLoading(true);
+    signIn("google");
+  };
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -45,7 +51,7 @@ export default function AuthDialog() {
             <div className="mt-6 space-y-4">
               {/* Google Sign In */}
               <button
-                onClick={() => signIn("google")}
+                onClick={handleSignin}
                 className="w-full px-5 py-3 text-white text-base font-semibold bg-secondary rounded-lg flex items-center justify-center tracking-wide gap-3"
               >
                 <Image
@@ -54,7 +60,7 @@ export default function AuthDialog() {
                   width={20}
                   height={20}
                 />
-                Continue with Google
+                {isLoading ? "Logging in..." : "Continue with Google"}
               </button>
             </div>
           </Dialog.Panel>
