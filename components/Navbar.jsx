@@ -2,20 +2,29 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 const nav_icons = [
   { src: "/assets/icons/search.svg", alt: "search" },
-  { src: "/assets/icons/user.svg", alt: "people" },
+  { src: "/assets/icons/user.svg", alt: "profile" },
   { src: "/assets/icons/logout.png", alt: "logout" },
 ];
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    if (session?.user) {
+      setEmail(session.user.email);
+    }
+  }, [session]);
 
   const handleLogout = () => {
-    signOut();
+    toast.info("User signed out successfully.");
+    setTimeout(() => signOut(), 1500);
   };
 
   return (
@@ -49,7 +58,11 @@ const Navbar = () => {
               return (
                 <Link
                   key={icon.alt}
-                  href={icon.alt === "people" ? "/people" : "#"}
+                  href={
+                    icon.alt === "profile"
+                      ? `/profile/${encodeURIComponent(email)}`
+                      : "#"
+                  }
                 >
                   <Image src={icon.src} alt={icon.alt} width={28} height={28} />
                 </Link>

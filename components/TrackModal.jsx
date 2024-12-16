@@ -1,14 +1,22 @@
 "use client";
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect } from "react";
 import { useState } from "react";
 import Image from "next/image";
 import { Dialog, Transition } from "@headlessui/react";
 import { addUserEmailToProduct } from "@/lib/actions";
+import { useSession } from "next-auth/react";
 
-const Modal = ({ productId }) => {
+const TrackModal = ({ productId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session?.user?.email) {
+      setEmail(session.user.email);
+    }
+  }, [session, isOpen]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -116,7 +124,7 @@ const Modal = ({ productId }) => {
 
                   <button
                     type="submit"
-                    className="dialog-btn mt-4 bg-blue-600 text-white py-2 px-4 rounded-md"
+                    className="dialog-btn mt-4 text-white py-2 px-4 rounded-md"
                   >
                     {isSubmitting ? "Processing..." : "Track"}
                   </button>
@@ -130,4 +138,4 @@ const Modal = ({ productId }) => {
   );
 };
 
-export default Modal;
+export default TrackModal;

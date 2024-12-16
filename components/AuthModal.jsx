@@ -6,8 +6,8 @@ import { useState, useEffect } from "react";
 import { Fragment } from "react";
 import Image from "next/image";
 
-export default function AuthDialog() {
-  const { data: session, status } = useSession();
+export default function AuthModal() {
+  const { status } = useSession();
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
 

@@ -2,8 +2,11 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 // Components Importer :
 import Navbar from "@/components/Navbar";
-import AuthDialog from "@/components/AuthDialog";
+import AuthModal from "@/components/AuthModal";
 import ClientSessionProvider from "@/components/ClientSessionProvider";
+// React toaster :
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Fonts-util :
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -18,10 +21,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={montserrat.className}>
         <ClientSessionProvider>
-          <AuthDialog />
+          <AuthModal />
           <main className="max-w-10xl mx-auto">
             <Navbar />
             {children}
+            <ToastContainer />
           </main>
         </ClientSessionProvider>
       </body>

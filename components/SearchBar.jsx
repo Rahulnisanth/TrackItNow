@@ -1,8 +1,9 @@
 "use client";
 
 import { ScrapeAndStoreProduct } from "@/lib/actions";
-import { FormEvent, useState } from "react";
+import { useState, useEffect } from "react";
 import ProductAlert from "./ProductAlert";
+import { useSession } from "next-auth/react";
 
 const isValidAmazonUrl = (url) => {
   try {
@@ -10,6 +11,7 @@ const isValidAmazonUrl = (url) => {
     const hostname = parsedUrl.hostname;
     if (
       hostname.includes("amazon.com") ||
+      hostname.includes("amazon.in") ||
       hostname.includes("amazon.") ||
       hostname.endsWith("amazon")
     ) {
@@ -26,6 +28,14 @@ const SearchBar = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
   const [productId, setProductId] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+
+  const { data: session } = useSession();
+  useEffect(() => {
+    if (session?.user?.email) {
+      setUserEmail(session.user.email);
+    }
+  }, [session]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -35,10 +45,9 @@ const SearchBar = () => {
     } else {
       try {
         setIsLoading(true);
-        const product = await ScrapeAndStoreProduct(searchPrompt);
-        console.log("product => ", product);
+        const product = await ScrapeAndStoreProduct(searchPrompt, userEmail);
+
         if (product) {
-          console.log("product id => ", product);
           setProductId(product.id);
           setAlertOpen(true);
         }

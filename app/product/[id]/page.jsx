@@ -1,12 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-// Components :
 import PriceInfoCard from "@/components/PriceInfoCard";
 import ProductCard from "@/components/ProductCard";
-import Modal from "@/components/Modal";
-import ProductDelete from "@/components/ProductDelete";
-// Utility functions :
+import TrackModal from "@/components/TrackModal";
 import { getProductById, getSimilarProducts } from "@/lib/actions";
 import { calculateRecommendedBuyers, formatNumber } from "@/lib/utils";
 
@@ -34,14 +31,6 @@ const ProductDetails = async ({ params: { id } }) => {
               <p className="text-[20px] md:text-[25px] text-secondary font-semibold">
                 {product.title}
               </p>
-
-              <Link
-                href={product.url}
-                target="_blank"
-                className="text-base text-black opacity-50"
-              >
-                Visit Product
-              </Link>
             </div>
 
             <div className="flex items-center gap-3">
@@ -50,21 +39,16 @@ const ProductDetails = async ({ params: { id } }) => {
                   {product.discountRate}% Discount
                 </p>
               </div>
-
-              <div className="p-2 bg-white-200 rounded-10 cursor-pointer">
-                <Image
-                  src="/assets/icons/bookmark.svg"
-                  alt="bookmark"
-                  width={20}
-                  height={20}
-                />
+              <div className="p-2 bg-gray-200 rounded-10 cursor-pointer">
+                <Link href={product.url} target="_blank">
+                  <Image
+                    src="/assets/icons/link.svg"
+                    alt="bookmark"
+                    width={20}
+                    height={20}
+                  />
+                </Link>
               </div>
-
-              {/* Delete button */}
-              <ProductDelete
-                productId={id}
-                imageLink={`/assets/icons/trash.svg`}
-              />
             </div>
           </div>
 
@@ -118,7 +102,6 @@ const ProductDetails = async ({ params: { id } }) => {
               </p>
             </div>
           </div>
-          {/* PRoduct info section end */}
 
           {/* Product price history */}
           <div className="my-7 flex flex-col gap-5">
@@ -155,8 +138,8 @@ const ProductDetails = async ({ params: { id } }) => {
           </div>
           {/* Product price history end */}
 
-          {/* Modal / Tracker button */}
-          <Modal productId={id} />
+          {/* TrackModal / Tracker button */}
+          <TrackModal productId={id} />
         </div>
       </div>
 

@@ -29,7 +29,6 @@ const authOptions = {
             trackedProducts: [],
           });
           await people.save();
-          console.log("New People created successfully!");
         }
         return true;
       } catch (error) {

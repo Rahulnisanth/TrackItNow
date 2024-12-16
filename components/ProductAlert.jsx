@@ -9,7 +9,6 @@ const ProductAlert = ({ alertOpen, setAlertOpen, productId }) => {
     setAlertOpen(false);
   };
   const handleClick = () => {
-    console.log("View product details clicked");
     close();
     router.push(`/product/${productId}`);
   };
