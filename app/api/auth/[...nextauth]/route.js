@@ -25,8 +25,7 @@ const authOptions = {
           people = new People({
             name: profile.name,
             email: profile.email,
-            favoriteProducts: [],
-            trackedProducts: [],
+            my_products: [],
           });
           await people.save();
         }
