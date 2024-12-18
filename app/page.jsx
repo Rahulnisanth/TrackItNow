@@ -1,5 +1,5 @@
 import HeroCarousel from "@/components/HeroCarousel";
-import SearchBar from "@/components/SearchBar";
+import ScrapingBar from "@/components/ScrapingBar";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts } from "@/lib/actions";
 
@@ -28,9 +28,9 @@ export default async function Home() {
               Powerful self-server product and growth analytics to help you
               convert, engage and retain more.
             </p>
-            {/* SearchBar */}
+            {/* ScrapingBar */}
             <div className="mt-4">
-              <SearchBar />
+              <ScrapingBar />
             </div>
           </div>
           <div className="w-full md:w-1/2">

@@ -6,6 +6,8 @@
 import Construction from "@/components/Construction";
 
 const ProfilePage = ({ params: { email } }) => {
+  return <Construction />;
+
   // const [activeTab, setActiveTab] = useState("searched");
   // const [searchedProducts, setSearchedProducts] = useState([]);
   // const [isLoading, setIsLoading] = useState(true);
@@ -30,8 +32,6 @@ const ProfilePage = ({ params: { email } }) => {
   // }, [email]);
 
   // if (isLoading) return <Loader />;
-
-  return <Construction />;
 
   // return (
   //   <section className="py-10 px-20 max-w-screen-2xl">

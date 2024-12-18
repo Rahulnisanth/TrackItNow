@@ -54,16 +54,18 @@ const Navbar = () => {
                   <Image src={icon.src} alt={icon.alt} width={28} height={28} />
                 </button>
               );
-            } else if (icon.alt !== "logout") {
+            } else if (icon.alt === "profile") {
               return (
                 <Link
                   key={icon.alt}
-                  href={
-                    icon.alt === "profile"
-                      ? `/profile/${encodeURIComponent(email)}`
-                      : "#"
-                  }
+                  href={`/profile/${encodeURIComponent(email)}`}
                 >
+                  <Image src={icon.src} alt={icon.alt} width={28} height={28} />
+                </Link>
+              );
+            } else if (icon.alt === "search") {
+              return (
+                <Link key={icon.alt} href={`/search`}>
                   <Image src={icon.src} alt={icon.alt} width={28} height={28} />
                 </Link>
               );
