@@ -49,18 +49,18 @@ const SearchPage = () => {
   return (
     <div className="md:py-10 md:px-20 max-w-screen-2xl">
       {/* Search Bar */}
-      <div className="md:w-full bg-white p-5 sticky top-0 z-10">
+      <div className="w-full bg-white p-5 sticky top-0 z-10">
         <SearchBar onSearch={handleSearch} />
       </div>
 
       {/* Content */}
-      <div className="flex flex-col items-center justify-start flex-grow p-4">
+      <div className="flex items-center justify-center">
         {/* Loader */}
         {loading && (
           <div className="flex items-center justify-center mt-8">
             <div className="flex items-center justify-center gap-3">
               <div className="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>
-              <p className="md:text-[35px] text-center text-[25px] tracking-wide font-bold text-gray-700 gap-4">
+              <p className="hidden md:block md:text-[35px] text-center text-[25px] tracking-wide font-bold text-gray-700 gap-4">
                 Loading<span className="text-red-500"> . . .</span>
               </p>
             </div>
@@ -77,8 +77,8 @@ const SearchPage = () => {
                   : "Start searching for products"}
               </div>
             ) : (
-              <section className="flex justify-center items-center">
-                <div className="flex flex-wrap mt-2 gap-x-6 gap-y-6">
+              <section className="flex flex-row md:flex-col">
+                <div className="flex flex-wrap w-screen md:w-full px-5 md:px-0 mt-2 gap-x-6 gap-y-6 md:gap-x-9 md:gap-y-8">
                   {products?.map((product) => (
                     <ProductCard key={product._id} product={product} />
                   ))}

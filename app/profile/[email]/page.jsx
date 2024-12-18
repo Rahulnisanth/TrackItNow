@@ -65,9 +65,9 @@ const ProfilePage = ({ params: { email } }) => {
   if (isLoading) return <Loader />;
 
   return (
-    <section className="pt-4 pb-10 px-20 max-w-screen-2xl">
+    <section className="pt-2 pb-10 md:px-20 max-w-screen-2xl">
       {/* Tabs for Products */}
-      <div className="mb-4 flex flex-row">
+      <div className="mb-4 flex flex-row justify-center items-center">
         <button
           className={`px-4 py-2 text-lg border-b-2 ${
             activeTab === "searched"
@@ -91,11 +91,11 @@ const ProfilePage = ({ params: { email } }) => {
       </div>
 
       {/* Product Lists */}
-      <div className="mt-8 flex justify-start">
+      <div className="mt-8">
         {activeTab === "searched" ? (
-          <section className="flex justify-center items-center">
+          <section className="flex flex-row md:flex-col">
             {searchedProducts.length > 0 ? (
-              <div className="flex flex-wrap mt-2 gap-x-6 gap-y-6">
+              <div className="flex flex-wrap w-screen md:w-full px-5 md:px-0 mt-2 gap-x-6 gap-y-6">
                 {searchedProducts?.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
@@ -105,9 +105,9 @@ const ProfilePage = ({ params: { email } }) => {
             )}
           </section>
         ) : (
-          <section className="flex justify-center items-center">
+          <section className="flex flex-row md:flex-col">
             {trackedProducts.length > 0 ? (
-              <div className="flex flex-wrap mt-2 gap-x-6 gap-y-6">
+              <div className="flex flex-wrap w-screen md:w-full px-5 md:px-0 mt-2 gap-x-6 gap-y-6">
                 {trackedProducts?.map((product) => (
                   <ProductCard key={product._id} product={product} />
                 ))}
