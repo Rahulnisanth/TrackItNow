@@ -22,9 +22,9 @@ const Navbar = () => {
     }
   }, [session]);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     toast.info("User signed out successfully.");
-    setTimeout(() => signOut(), 1500);
+    await signOut();
   };
 
   return (

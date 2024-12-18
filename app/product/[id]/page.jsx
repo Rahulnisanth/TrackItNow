@@ -36,7 +36,10 @@ const ProductDetails = async ({ params: { id } }) => {
             <div className="flex items-center gap-3">
               <div className="product-hearts">
                 <p className="text-base font-semibold text-[#D46F77]">
-                  {product.discountRate}% Discount
+                  {product.discountRate === "" || product.discountRate === " "
+                    ? 0
+                    : product.discountRate}
+                  % Discount
                 </p>
               </div>
               <div className="p-2 bg-gray-200 rounded-10 cursor-pointer">
@@ -73,7 +76,10 @@ const ProductDetails = async ({ params: { id } }) => {
                     height={16}
                   />
                   <p className="text-sm text-primary-orange font-semibold">
-                    {product.reviewStarCount}
+                    {product.reviewStarCount === "" ||
+                    product.reviewStarCount === " "
+                      ? 0
+                      : product.reviewStarCount}
                   </p>
                 </div>
 
@@ -85,7 +91,10 @@ const ProductDetails = async ({ params: { id } }) => {
                     height={16}
                   />
                   <p className="text-sm text-secondary font-semibold">
-                    {product.ratingsCount} Reviews
+                    {product.ratingsCount === "" || product.ratingsCount === " "
+                      ? 0
+                      : product.ratingsCount}{" "}
+                    Reviews
                   </p>
                 </div>
               </div>

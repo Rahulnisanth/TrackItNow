@@ -37,8 +37,7 @@ const ScrapingBar = () => {
     }
   }, [session]);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleScraping = async () => {
     const isValid = isValidAmazonUrl(searchPrompt);
     if (!isValid) {
       alert("Please, Enter a Valid Link!");
@@ -46,7 +45,6 @@ const ScrapingBar = () => {
       try {
         setIsLoading(true);
         const product = await ScrapeAndStoreProduct(searchPrompt, userEmail);
-
         if (product) {
           setProductId(product.id);
           setAlertOpen(true);
@@ -60,6 +58,17 @@ const ScrapingBar = () => {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    handleScraping(searchPrompt);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleScraping(searchPrompt);
+    }
+  };
+
   return (
     <>
       <form className="flex flex-wrap gap-4 mt-12" onSubmit={handleSubmit}>
@@ -67,6 +76,7 @@ const ScrapingBar = () => {
           type="text"
           value={searchPrompt}
           onChange={(e) => setSearchPrompt(e.target.value)}
+          onKeyDown={handleKeyDown}
           className="scraping-bar-input"
           placeholder="Enter a Amazon product link"
         />

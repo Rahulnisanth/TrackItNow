@@ -1,7 +1,7 @@
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrapingBar from "@/components/ScrapingBar";
 import ProductCard from "@/components/ProductCard";
-import { getAllProducts } from "@/lib/actions";
+import { getTrendingProducts } from "@/lib/actions";
 
 // Carousel Images
 const hero_images = [
@@ -13,7 +13,7 @@ const hero_images = [
 ];
 
 export default async function Home() {
-  const products = await getAllProducts();
+  const products = await getTrendingProducts();
 
   return (
     <>

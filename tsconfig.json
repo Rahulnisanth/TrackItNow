@@ -42,6 +42,7 @@
     "components/Loader.jsx",
     "components/Construction.jsx",
     "components/ScrapingBar.jsx",
+    "components/SearchBar.jsx",
     "components/AuthModal.jsx",
     "components/ClientSessionProvider.jsx",
     "app/product/[id]/loading.jsx",
