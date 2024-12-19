@@ -2,11 +2,14 @@
 import { useEffect, useState } from "react";
 import ProductCard from "@/components/ProductCard";
 import Loader from "@/components/Loader";
+import DefaultProfile from "../../../public/assets/images/default_profile.svg";
+import Image from "next/image";
 
 const ProfilePage = ({ params: { email } }) => {
   const [activeTab, setActiveTab] = useState("searched");
   const [searchedProducts, setSearchedProducts] = useState([]);
   const [trackedProducts, setTrackedProducts] = useState([]);
+  const [profileInfo, setProfileInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -57,15 +60,56 @@ const ProfilePage = ({ params: { email } }) => {
         setIsLoading(false);
       }
     };
-
     fetchSearchedProducts();
     fetchTrackedProducts();
   }, [email]);
 
+  useEffect(() => {
+    const fetchProfileInfo = async () => {
+      try {
+        const response = await fetch(
+          `/api/profile/user-info?email=${encodeURIComponent(email)}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch profile info.");
+        }
+        const responseData = await response.json();
+        setProfileInfo(responseData.data[0]);
+      } catch (error) {
+        console.error("Error fetching profile info:", error);
+      }
+    };
+    fetchProfileInfo();
+  }, [email]);
+
+  console.log("User-info => ", profileInfo);
+
   if (isLoading) return <Loader />;
 
   return (
-    <section className="pt-2 pb-10 md:px-20 max-w-screen-2xl">
+    <section className="pt-5 pb-10 md:px-20 max-w-screen-2xl">
+      {/* Profile info bar */}
+      <div className="flex flex-col items-center text-center mb-8">
+        <Image
+          src={profileInfo?.profile_picture || DefaultProfile}
+          alt="Profile Picture"
+          width={24}
+          height={24}
+          className="w-24 h-24 rounded-full object-cover border"
+        />
+        <h1 className="text-2xl font-bold mt-4">{profileInfo?.name}</h1>
+        <p className="text-gray-600">{profileInfo?.email}</p>
+        <div className="mt-2 flex flex-row gap-6">
+          <div className="text-gray-700">
+            <span className="font-semibold">Searched Products: </span>
+            {searchedProducts.length}
+          </div>
+          <div className="text-gray-700">
+            <span className="font-semibold">Tracked Products: </span>
+            {trackedProducts.length}
+          </div>
+        </div>
+      </div>
       {/* Tabs for Products */}
       <div className="mb-4 flex flex-row justify-center items-center">
         <button
@@ -101,7 +145,9 @@ const ProfilePage = ({ params: { email } }) => {
                 ))}
               </div>
             ) : (
-              <p>No Products searched until now.</p>
+              <p className="w-full text-center">
+                No Products searched until now.
+              </p>
             )}
           </section>
         ) : (
@@ -113,7 +159,7 @@ const ProfilePage = ({ params: { email } }) => {
                 ))}
               </div>
             ) : (
-              <p>No Products tracked until now.</p>
+              <p className="text-center">No Products tracked until now.</p>
             )}
           </section>
         )}

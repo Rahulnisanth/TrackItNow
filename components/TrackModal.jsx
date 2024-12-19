@@ -10,6 +10,7 @@ const TrackModal = ({ productId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [email, setEmail] = useState("");
+  const [submitStatus, setSubmitStatus] = useState("");
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -21,14 +22,23 @@ const TrackModal = ({ productId }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await addUserEmailToProduct(productId, email);
-    setIsSubmitting(false);
-    setEmail("");
-    close();
+    setSubmitStatus("");
+    try {
+      await addUserEmailToProduct(productId, email);
+      setSubmitStatus("success");
+    } catch (error) {
+      setSubmitStatus("error");
+    } finally {
+      setIsSubmitting(false);
+      setEmail("");
+    }
   };
 
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    setSubmitStatus("");
+  };
 
   return (
     <>
@@ -124,9 +134,18 @@ const TrackModal = ({ productId }) => {
 
                   <button
                     type="submit"
-                    className="dialog-btn mt-4 text-white py-2 px-4 rounded-md"
+                    className={`dialog-btn mt-4 text-white py-2 px-4 rounded-md ${
+                      isSubmitting ? "bg-gray-500" : "bg-blue-500"
+                    }`}
+                    disabled={isSubmitting}
                   >
-                    {isSubmitting ? "Processing..." : "Track"}
+                    {isSubmitting
+                      ? "Processing..."
+                      : submitStatus === "success"
+                      ? "Email sent!"
+                      : submitStatus === "error"
+                      ? "Retry!"
+                      : "Track"}
                   </button>
                 </form>
               </div>

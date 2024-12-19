@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { connect_to_database } from "@/lib/mongoose";
 import People from "@/lib/models/people.model";
+import DefaultProfile from "../../../../public/assets/images/default_profile.svg";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
@@ -24,6 +25,7 @@ const authOptions = {
         if (!people) {
           people = new People({
             name: profile.name,
+            profile_picture: profile.picture || DefaultProfile,
             email: profile.email,
             my_products: [],
           });
