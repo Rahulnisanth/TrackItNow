@@ -24,9 +24,6 @@ Tags: BrightData, CRONJobs, Cheerio, NextJS, Puppeteer
 4. **User Dashboard**:
    - A dashboard where users can view tracked products, current prices, historical data, and set alert preferences.
    - User-friendly interface for adding/removing products and managing notifications.
-5. **Chrome Extension**:
-   - A Chrome extension that allows users to easily add products to their tracking list directly from eCommerce sites.
-   - Quick access to the dashboard and recent alerts.
 
 ### Technologies Used:
 
@@ -51,9 +48,6 @@ Tags: BrightData, CRONJobs, Cheerio, NextJS, Puppeteer
    - Develop a user-friendly interface using Next.js for adding and managing tracked products.
    - Implement charts and graphs for historical price analysis.
    - Create a notification system for price alerts.
-3. **Chrome Extension**:
-   - Develop a Chrome extension to enable users to add products directly from eCommerce sites.
-   - Ensure seamless integration with the main application.
 4. **Automation and Notification**:
    - Set up CRON jobs for periodic execution of web scraping scripts.
    - Implement email notifications using services like SendGrid or Node mailer.
