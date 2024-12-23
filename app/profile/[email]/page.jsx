@@ -36,7 +36,10 @@ const ProfilePage = ({ params: { email } }) => {
         setIsLoading(false);
       }
     };
+    fetchSearchedProducts();
+  }, [email]);
 
+  useEffect(() => {
     const fetchTrackedProducts = async () => {
       try {
         const response = await fetch(
@@ -60,7 +63,6 @@ const ProfilePage = ({ params: { email } }) => {
         setIsLoading(false);
       }
     };
-    fetchSearchedProducts();
     fetchTrackedProducts();
   }, [email]);
 
@@ -81,8 +83,6 @@ const ProfilePage = ({ params: { email } }) => {
     };
     fetchProfileInfo();
   }, [email]);
-
-  console.log("User-info => ", profileInfo);
 
   if (isLoading) return <Loader />;
 
