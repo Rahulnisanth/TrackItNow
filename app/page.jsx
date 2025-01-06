@@ -1,7 +1,8 @@
+"use client";
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrapingBar from "@/components/ScrapingBar";
 import ProductCard from "@/components/ProductCard";
-import { getTrendingProducts } from "@/lib/actions";
+import { useState, useEffect } from "react";
 
 // Carousel Images
 const hero_images = [
@@ -13,7 +14,23 @@ const hero_images = [
 ];
 
 export default async function Home() {
-  const products = await getTrendingProducts();
+  const [trendingProducts, setTrendingProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchTrendingProducts = async () => {
+      try {
+        const response = await fetch(`/api/trending`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch trending products.");
+        }
+        const responseData = await response.json();
+        setTrendingProducts(responseData.data);
+      } catch (error) {
+        console.error("Error fetching trending products:", error);
+      }
+    };
+    fetchTrendingProducts();
+  }, []);
 
   return (
     <>
@@ -40,11 +57,11 @@ export default async function Home() {
       </section>
 
       {/* All products / Trending Section */}
-      {products && products.length > 0 ? (
+      {trendingProducts && trendingProducts.length > 0 ? (
         <section className="trending-section text-center">
           <h2 className="section-text">Most Trending Products</h2>
           <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
-            {products?.map((product) => (
+            {trendingProducts?.map((product) => (
               <ProductCard key={product._id} product={product} />
             ))}
           </div>

@@ -13,76 +13,49 @@ const ProfilePage = ({ params: { email } }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchSearchedProducts = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(
-          `/api/profile/user-searched-products?email=${encodeURIComponent(
-            email
-          )}`,
-          {
-            method: "GET",
-          }
-        );
+        setIsLoading(true);
 
-        if (!response.ok) {
-          throw new Error("Failed to fetch searched products.");
+        const [searchedResponse, trackedResponse, profileResponse] =
+          await Promise.all([
+            fetch(
+              `/api/profile/user-searched-products?email=${encodeURIComponent(
+                email
+              )}`
+            ),
+            fetch(
+              `/api/profile/user-tracked-products?email=${encodeURIComponent(
+                email
+              )}`
+            ),
+            fetch(`/api/profile/user-info?email=${encodeURIComponent(email)}`),
+          ]);
+
+        if (
+          !searchedResponse.ok ||
+          !trackedResponse.ok ||
+          !profileResponse.ok
+        ) {
+          throw new Error("Failed to fetch profile data.");
         }
 
-        const data = await response.json();
-        setSearchedProducts(data.data || []);
+        const searchedData = await searchedResponse.json();
+        const trackedData = await trackedResponse.json();
+        const profileData = await profileResponse.json();
+
+        setSearchedProducts(searchedData.data || []);
+        setTrackedProducts(trackedData.data || []);
+        setProfileInfo(profileData.data[0]);
       } catch (error) {
-        console.error("Error fetching searched products:", error);
+        console.error("Error fetching profile data:", error);
       } finally {
         setIsLoading(false);
       }
     };
-    fetchSearchedProducts();
-  }, [email]);
 
-  useEffect(() => {
-    const fetchTrackedProducts = async () => {
-      try {
-        const response = await fetch(
-          `/api/profile/user-tracked-products?email=${encodeURIComponent(
-            email
-          )}`,
-          {
-            method: "GET",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch tracked products.");
-        }
-
-        const data = await response.json();
-        setTrackedProducts(data.data || []);
-      } catch (error) {
-        console.error("Error fetching tracked products:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchTrackedProducts();
-  }, [email]);
-
-  useEffect(() => {
-    const fetchProfileInfo = async () => {
-      try {
-        const response = await fetch(
-          `/api/profile/user-info?email=${encodeURIComponent(email)}`
-        );
-        if (!response.ok) {
-          throw new Error("Failed to fetch profile info.");
-        }
-        const responseData = await response.json();
-        setProfileInfo(responseData.data[0]);
-      } catch (error) {
-        console.error("Error fetching profile info:", error);
-      }
-    };
-    fetchProfileInfo();
-  }, [email]);
+    fetchData();
+  }, [email, activeTab]);
 
   if (isLoading) return <Loader />;
 
@@ -110,6 +83,7 @@ const ProfilePage = ({ params: { email } }) => {
           </div>
         </div>
       </div>
+
       {/* Tabs for Products */}
       <div className="mb-4 flex flex-row justify-center items-center">
         <button
