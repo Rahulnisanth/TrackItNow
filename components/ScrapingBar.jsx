@@ -1,5 +1,3 @@
-"use client";
-
 import { ScrapeAndStoreProduct } from "@/lib/actions";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
@@ -17,7 +15,6 @@ const isValidAmazonUrl = (url) => {
 const ScrapingBar = () => {
   const [searchPrompt, setSearchPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [productId, setProductId] = useState("");
   const [userEmail, setUserEmail] = useState("");
 
   const { data: session } = useSession();
@@ -33,13 +30,13 @@ const ScrapingBar = () => {
       toast.error("Please enter a valid Amazon link.");
       return;
     }
+
     try {
       setIsLoading(true);
       const product = await ScrapeAndStoreProduct(searchPrompt, userEmail);
       if (!product) {
         toast.info("Product already exists!");
       } else {
-        setProductId(product.id);
         toast.success("Product scraped successfully!");
       }
       setSearchPrompt("");

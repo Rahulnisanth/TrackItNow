@@ -1,4 +1,5 @@
 "use client";
+
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import ProductCard from "@/components/ProductCard";

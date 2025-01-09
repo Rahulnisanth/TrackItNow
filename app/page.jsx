@@ -1,8 +1,9 @@
 "use client";
+
+import { useState, useEffect } from "react";
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrapingBar from "@/components/ScrapingBar";
 import ProductCard from "@/components/ProductCard";
-import { useState, useEffect } from "react";
 
 // Carousel Images
 const hero_images = [
@@ -13,10 +14,11 @@ const hero_images = [
   { imgUrl: "assets/images/hero-5.svg", alt: "hero-5" },
 ];
 
-export default async function Home() {
+export default function Home() {
   const [trendingProducts, setTrendingProducts] = useState([]);
 
   useEffect(() => {
+    // Fetch trending products inside useEffect
     const fetchTrendingProducts = async () => {
       try {
         const response = await fetch(`/api/trending`);
@@ -29,8 +31,9 @@ export default async function Home() {
         console.error("Error fetching trending products:", error);
       }
     };
+
     fetchTrendingProducts();
-  }, []);
+  }, []); // Empty dependency array to run only once on component mount
 
   return (
     <>
