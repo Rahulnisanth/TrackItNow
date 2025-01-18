@@ -10,7 +10,7 @@ export type Product = {
   _id?: string;
   url: string;
   currency: string;
-  image: string;
+  // image: string;
   title: string;
   ratingsCount: string;
   reviewStarCount: string;
