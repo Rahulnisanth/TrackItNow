@@ -1,0 +1,4 @@
+app/layout.jsx             | 1 +
+ app/page.jsx               | 1 +
+ components/ScrapingBar.jsx | 1 +
+ 3 files changed, 3 insertions(+)
