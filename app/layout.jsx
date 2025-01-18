@@ -24,6 +24,7 @@ export default function RootLayout({ children }) {
           <AuthModal />
           <main className="max-w-10xl mx-auto">
             <Navbar />
+
             {children}
             <ToastContainer />
           </main>

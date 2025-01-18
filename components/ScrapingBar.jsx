@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 
 const isValidAmazonUrl = (url) => {
+  console.log(url);
   try {
     const { hostname } = new URL(url);
     return hostname.includes("amazon.");

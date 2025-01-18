@@ -63,6 +63,7 @@ export default function Home() {
       {trendingProducts && trendingProducts.length > 0 ? (
         <section className="trending-section text-center">
           <h2 className="section-text">Most Trending Products</h2>
+
           <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
             {trendingProducts?.map((product) => (
               <ProductCard key={product._id} product={product} />
