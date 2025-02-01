@@ -1,4 +1,4 @@
 lib/mongoose.js    | 1 +
  lib/types/index.ts | 2 +-
- lib/utils.js       | 1 +
- 3 files changed, 3 insertions(+), 1 deletion(-)
+ lib/utils.js       | 2 ++
+ 3 files changed, 4 insertions(+), 1 deletion(-)
