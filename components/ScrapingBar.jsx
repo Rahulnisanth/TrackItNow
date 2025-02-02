@@ -1,7 +1,8 @@
 import { ScrapeAndStoreProduct } from "@/lib/actions";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { toast } from "react-toastify";
+import Toast from "./Toast";
+import Loader from "./Loader";
 
 const isValidAmazonUrl = (url) => {
   console.log(url);
@@ -17,6 +18,7 @@ const ScrapingBar = () => {
   const [searchPrompt, setSearchPrompt] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [toastMessage, setToastMessage] = useState(null);
 
   const { data: session } = useSession();
 
@@ -28,7 +30,7 @@ const ScrapingBar = () => {
 
   const handleScraping = async () => {
     if (!isValidAmazonUrl(searchPrompt)) {
-      toast.error("Please enter a valid Amazon link.");
+      setToastMessage("Please enter a valid Amazon link.");
       return;
     }
 
@@ -36,14 +38,14 @@ const ScrapingBar = () => {
       setIsLoading(true);
       const product = await ScrapeAndStoreProduct(searchPrompt, userEmail);
       if (!product) {
-        toast.info("Product already exists!");
+        setToastMessage("Product already exists!");
       } else {
-        toast.success("Product scraped successfully!");
+        setToastMessage("Product scraped successfully!");
       }
       setSearchPrompt("");
     } catch (error) {
       console.error("Scraping error:", error);
-      toast.error("An error occurred while fetching the product.");
+      setToastMessage("An error occurred while fetching the product.");
     } finally {
       setIsLoading(false);
     }
@@ -56,6 +58,14 @@ const ScrapingBar = () => {
 
   return (
     <>
+      {isLoading && (
+        <div className="fixed inset-0 bg-white bg-opacity-75 flex items-center justify-center z-50 pointer-events-auto">
+          <Loader />
+        </div>
+      )}
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
+      )}
       <form className="flex flex-wrap gap-4 mt-12" onSubmit={handleSubmit}>
         <input
           type="text"

@@ -4,9 +4,6 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import AuthModal from "@/components/AuthModal";
 import ClientSessionProvider from "@/components/ClientSessionProvider";
-// React toaster :
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 // Fonts-util :
 const montserrat = Montserrat({ subsets: ["latin"] });
@@ -26,7 +23,6 @@ export default function RootLayout({ children }) {
             <Navbar />
 
             {children}
-            <ToastContainer />
           </main>
         </ClientSessionProvider>
       </body>

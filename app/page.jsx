@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import HeroCarousel from "@/components/HeroCarousel";
 import ScrapingBar from "@/components/ScrapingBar";
 import ProductCard from "@/components/ProductCard";
+import Loader from "@/components/Loader";
 
 // Carousel Images
 const hero_images = [
@@ -16,24 +17,74 @@ const hero_images = [
 
 export default function Home() {
   const [trendingProducts, setTrendingProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch trending products inside useEffect
     const fetchTrendingProducts = async () => {
       try {
+        setIsLoading(true);
+        setError(null);
+
         const response = await fetch(`/api/trending`);
         if (!response.ok) {
           throw new Error("Failed to fetch trending products.");
         }
+
         const responseData = await response.json();
-        setTrendingProducts(responseData.data);
+        setTrendingProducts(responseData.data || []);
       } catch (error) {
         console.error("Error fetching trending products:", error);
+        setError(
+          "Failed to load trending products. Please try refreshing the page."
+        );
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchTrendingProducts();
-  }, []); // Empty dependency array to run only once on component mount
+  }, []);
+
+  const renderTrendingSection = () => {
+    if (isLoading) {
+      return (
+        <div className="flex justify-center items-center min-h-[200px]">
+          <Loader />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="text-center py-8">
+          <p className="text-red-500 mb-4">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      );
+    }
+
+    if (!trendingProducts || trendingProducts.length === 0) {
+      return (
+        <div className="text-center py-8 text-gray-500">
+          No trending products available at the moment.
+        </div>
+      );
+    }
+
+    return (
+      <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
+        {trendingProducts.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -44,11 +95,10 @@ export default function Home() {
               Unleash the power of
               <span className="text-primary"> TrackItNow.</span>
             </h1>
-            <p key="second-para" className="mt-6 text-center md:text-left">
+            <p className="mt-6 text-center md:text-left">
               Powerful self-server product and growth analytics to help you
               convert, engage and retain more.
             </p>
-            {/* ScrapingBar */}
             <div className="mt-4">
               <ScrapingBar />
             </div>
@@ -59,20 +109,10 @@ export default function Home() {
         </div>
       </section>
 
-      {/* All products / Trending Section */}
-      {trendingProducts && trendingProducts.length > 0 ? (
-        <section className="trending-section text-center">
-          <h2 className="section-text">Most Trending Products</h2>
-
-          <div className="flex flex-wrap mt-2 gap-x-8 gap-y-16">
-            {trendingProducts?.map((product) => (
-              <ProductCard key={product._id} product={product} />
-            ))}
-          </div>
-        </section>
-      ) : (
-        <span>{""}</span>
-      )}
+      <section className="trending-section">
+        <h2 className="section-text text-center">Most Trending Products</h2>
+        {renderTrendingSection()}
+      </section>
     </>
   );
 }

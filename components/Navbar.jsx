@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { signOut, useSession } from "next-auth/react";
-import { toast } from "react-toastify";
 
 const nav_icons = [
   { src: "/assets/icons/search.svg", alt: "search" },
@@ -23,7 +22,6 @@ const Navbar = () => {
   }, [session]);
 
   const handleLogout = async () => {
-    toast.info("User signed out successfully.");
     await signOut();
   };
 
